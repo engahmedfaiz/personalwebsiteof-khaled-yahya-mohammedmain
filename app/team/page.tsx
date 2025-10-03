@@ -2131,9 +2131,7 @@ export default function TeamPage() {
               تعرف على فريقنا المتكامل من المحامين والمستشارين القانونيين
               المتخصصين
             </p>
-            <div className="text-sm text-muted-foreground bg-primary/10 p-3 rounded-lg inline-block">
-              💡 الأعضاء مرتبون من الأقدم إلى الأحدث
-            </div>
+            
           </div>
 
           <div className="space-y-6">
