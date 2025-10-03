@@ -503,7 +503,8 @@ export default function BlogPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-
+  fetchArticles();
+  }, []);
 
     const fetchArticles = async () => {
       try {
@@ -531,8 +532,7 @@ export default function BlogPage() {
       }
     };
 
-    fetchArticles();
-  }, []);
+
 
   if (loading) {
     return <div className="p-6 text-center">جارٍ تحميل المقالات...</div>;
