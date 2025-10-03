@@ -504,33 +504,58 @@ export default function BlogPage() {
 
   useEffect(() => {
     const fetchArticles = async () => {
-      try {
-        const res = await fetch("/api/articles/public"); // أو المسار الذي توفره في الـ API
-        if (!res.ok) {
-          throw new Error(`فشل جلب المقالات: ${res.status}`);
-        }
-        const data: Article[] = await res.json();
-        // فلتر المقالات المنشورة فقط
-        const published = data.filter((art) => art.isPublished);
-        // يمكنك اختيار أول مقال كمميز
-        const feat =
-          published.find((art) => art.slug === "some-featured-slug") ||
-          published[0] ||
-          null;
-        setFeatured(feat);
-        // استبعد المقال المميز من القائمة العامة
-        const rest = published.filter((art) => art.slug !== feat?.slug);
-        setArticles(rest);
-      } catch (err) {
-        console.error("Error fetching articles:", err);
-        setError(err instanceof Error ? err.message : "خطأ غير معروف");
-      } finally {
-        setLoading(false);
-      }
-    };
+  try {
+    const res = await fetch("/api/articles/public");
+    if (!res.ok) throw new Error(`فشل جلب المقالات: ${res.status}`);
+    const data: Article[] = await res.json();
+    const published = data.filter((art) => art.isPublished);
 
-    fetchArticles();
-  }, []);
+    const feat =
+      published.find((art) => art.slug === "some-featured-slug") ||
+      published[0] ||
+      null;
+
+    setFeatured(feat);
+    setArticles(published.filter((art) => art.slug !== feat?.slug));
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "خطأ غير معروف");
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchArticles();
+}, []);
+
+  //   const fetchArticles = async () => {
+  //     try {
+  //       const res = await fetch("/api/articles/public"); // أو المسار الذي توفره في الـ API
+  //       if (!res.ok) {
+  //         throw new Error(`فشل جلب المقالات: ${res.status}`);
+  //       }
+  //       const data: Article[] = await res.json();
+  //       // فلتر المقالات المنشورة فقط
+  //       const published = data.filter((art) => art.isPublished);
+  //       // يمكنك اختيار أول مقال كمميز
+  //       const feat =
+  //         published.find((art) => art.slug === "some-featured-slug") ||
+  //         published[0] ||
+  //         null;
+  //       setFeatured(feat);
+  //       // استبعد المقال المميز من القائمة العامة
+  //       const rest = published.filter((art) => art.slug !== feat?.slug);
+  //       setArticles(rest);
+  //     } catch (err) {
+  //       console.error("Error fetching articles:", err);
+  //       setError(err instanceof Error ? err.message : "خطأ غير معروف");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchArticles();
+  // }, []);
 
   if (loading) {
     return <div className="p-6 text-center">جارٍ تحميل المقالات...</div>;
