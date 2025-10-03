@@ -459,6 +459,337 @@
 //   )
 // }
 
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import {
+//   Scale,
+//   BookOpen,
+//   Calendar,
+//   User,
+//   ArrowLeft,
+//   Eye,
+//   Clock,
+//   Tag,
+//   TrendingUp,
+//   Star,
+//   Share2,
+// } from "lucide-react";
+// import Link from "next/link";
+
+// interface Article {
+//   _id?: string; // لاحظ: نحول ObjectId إلى string في الـ API أو عند الإرسال
+//   title: string;
+//   slug: string;
+//   content: string;
+//   excerpt: string;
+//   author: string;
+//   category: string;
+//   tags: string[];
+//   featuredImage?: string;
+//   isPublished: boolean;
+//   publishedAt?: string; // أو Date، حسب ما ترسل من الـ API
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+// export default function BlogPage() {
+//   const [articles, setArticles] = useState<Article[]>([]);
+//   const [featured, setFeatured] = useState<Article | null>(null);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [error, setError] = useState<string | null>(null);
+
+//   useEffect(() => {
+
+
+//     const fetchArticles = async () => {
+//       try {
+//         const res = await fetch("/api/articles/public"); // أو المسار الذي توفره في الـ API
+//         if (!res.ok) {
+//           throw new Error(`فشل جلب المقالات: ${res.status}`);
+//         }
+//         const data: Article[] = await res.json();
+//         // فلتر المقالات المنشورة فقط
+//         const published = data.filter((art) => art.isPublished);
+//         // يمكنك اختيار أول مقال كمميز
+//         const feat =
+//           published.find((art) => art.slug === "some-featured-slug") ||
+//           published[0] ||
+//           null;
+//         setFeatured(feat);
+//         // استبعد المقال المميز من القائمة العامة
+//         const rest = published.filter((art) => art.slug !== feat?.slug);
+//         setArticles(rest);
+//       } catch (err) {
+//         console.error("Error fetching articles:", err);
+//         setError(err instanceof Error ? err.message : "خطأ غير معروف");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchArticles();
+//   }, []);
+
+//   if (loading) {
+//     return <div className="p-6 text-center">جارٍ تحميل المقالات...</div>;
+//   }
+
+//   if (error) {
+//     return <div className="p-6 text-center text-red-600">خطأ: {error}</div>;
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-background text-foreground">
+//       {/* <nav className="sticky top-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border/50">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex items-center justify-between h-16">
+//             <Link
+//               href="/"
+//               className="flex items-center gap-3 hover:scale-105 transition-transform"
+//             >
+//               <Scale className="w-8 h-8 text-primary" />
+//               <span className="text-xl font-bold">المحامي خالد الناصر</span>
+//             </Link>
+
+//             <div className="hidden md:flex items-center gap-6">
+//               <Link
+//                 href="/"
+//                 className="text-muted-foreground hover:text-primary transition-colors"
+//               >
+//                 الرئيسية
+//               </Link>
+//               <Link
+//                 href="/about"
+//                 className="text-muted-foreground hover:text-primary transition-colors"
+//               >
+//                 من نحن
+//               </Link>
+//               <Link
+//                 href="/services"
+//                 className="text-muted-foreground hover:text-primary transition-colors"
+//               >
+//                 خدماتنا
+//               </Link>
+//               <Link
+//                 href="/team"
+//                 className="text-muted-foreground hover:text-primary transition-colors"
+//               >
+//                 فريق العمل
+//               </Link>
+//               <Link href="/blog" className="text-primary font-medium">
+//                 المقالات
+//               </Link>
+//               <Link
+//                 href="/contact"
+//                 className="text-muted-foreground hover:text-primary transition-colors"
+//               >
+//                 اتصل بنا
+//               </Link>
+//             </div>
+
+//             <Button asChild className="bg-primary hover:bg-primary/90">
+//               <Link href="/contact">احجز استشارة</Link>
+//             </Button>
+//           </div>
+//         </div>
+//       </nav> */}
+
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+//         {/* قسم المقال المميز */}
+//         {featured && (
+//           <section className="space-y-8">
+//             <div className="flex items-center gap-3">
+//               <Star className="w-6 h-6 text-primary" />
+//               <h2 className="text-2xl font-bold">المقال المميز</h2>
+//             </div>
+
+//             <Card className="group hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] bg-card/50 border-primary/20 hover:border-primary/40 overflow-hidden">
+//               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+//                 <div className="relative h-64 lg:h-auto">
+//                   <img
+//                     src={featured.featuredImage || "/placeholder.svg"}
+//                     alt={featured.title}
+//                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+//                   />
+//                   <div className="absolute top-4 right-4">
+//                     <Badge className="bg-primary text-primary-foreground">
+//                       مميز
+//                     </Badge>
+//                   </div>
+//                 </div>
+
+//                 <CardContent className="p-8 lg:p-12 space-y-6">
+//                   <div className="space-y-4">
+//                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
+//                       <Badge variant="secondary">{featured.category}</Badge>
+//                       {featured.publishedAt && (
+//                         <div className="flex items-center gap-1">
+//                           <Calendar className="w-4 h-4" />
+//                           <span>
+//                             {new Date(featured.publishedAt).toLocaleDateString(
+//                               "ar-SA"
+//                             )}
+//                           </span>
+//                         </div>
+//                       )}
+//                     </div>
+
+//                     <h3 className="text-2xl font-bold group-hover:text-primary transition-colors leading-tight">
+//                       {featured.title}
+//                     </h3>
+
+//                     <p className="text-muted-foreground leading-relaxed">
+//                       {featured.excerpt}
+//                     </p>
+
+//                     <div className="flex items-center justify-between pt-4">
+//                       <div className="flex items-center gap-3">
+//                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
+//                           <User className="w-4 h-4" />
+//                           <span>{featured.author}</span>
+//                         </div>
+//                       </div>
+
+//                       <Button
+//                         asChild
+//                         variant="outline"
+//                         className="border-primary/30 hover:bg-primary/10 hover:text-primary/30 bg-transparent"
+//                       >
+//                         <Link href={`/blog/${featured.slug}`}>
+//                           اقرأ المزيد
+//                           <ArrowLeft className="w-4 h-4 mr-2" />
+//                         </Link>
+//                       </Button>
+//                     </div>
+//                   </div>
+//                 </CardContent>
+//               </div>
+//             </Card>
+//           </section>
+//         )}
+
+//         {/* قائمة باقي المقالات */}
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+//           <div className="lg:col-span-3 space-y-8">
+//             <div className="flex items-center justify-between">
+//               <h2 className="text-2xl font-bold">أحدث المقالات</h2>
+//               <div className="flex items-center gap-2 text-sm text-muted-foreground">
+//                 <TrendingUp className="w-4 h-4" />
+//                 <span>{articles.length} مقال</span>
+//               </div>
+//             </div>
+
+//             <div className="space-y-8">
+//               {articles.map((article) => (
+//                 <Card
+//                   key={article.slug}
+//                   className="group hover:shadow-xl transition-all duration-300 hover:scale-[1.01] bg-card/50 border-primary/20 hover:border-primary/40 overflow-hidden"
+//                 >
+//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+//                     <div className="relative h-48 md:h-auto">
+//                       <img
+//                         src={article.featuredImage || "/placeholder.svg"}
+//                         alt={article.title}
+//                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+//                       />
+//                     </div>
+//                     <CardContent className="md:col-span-2 p-6 space-y-4">
+//                       <div className="space-y-3">
+//                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
+//                           <Badge variant="secondary">{article.category}</Badge>
+//                           {article.publishedAt && (
+//                             <div className="flex items-center gap-1">
+//                               <Calendar className="w-4 h-4" />
+//                               <span>
+//                                 {new Date(
+//                                   article.publishedAt
+//                                 ).toLocaleDateString("ar-SA")}
+//                               </span>
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         <h3 className="text-xl font-bold group-hover:text-primary transition-colors leading-tight">
+//                           {article.title}
+//                         </h3>
+
+//                         <p className="text-muted-foreground leading-relaxed text-sm">
+//                           {article.excerpt}
+//                         </p>
+
+//                         <div className="flex flex-wrap gap-2">
+//                           {article.tags.map((tag, idx) => (
+//                             <Badge
+//                               key={idx}
+//                               variant="outline"
+//                               className="text-xs border-primary/20 text-primary"
+//                             >
+//                               <Tag className="w-3 h-3 ml-1" />
+//                               {tag}
+//                             </Badge>
+//                           ))}
+//                         </div>
+//                       </div>
+
+//                       <div className="flex items-center justify-between pt-4 border-t border-border/50">
+//                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
+//                           <div className="flex items-center gap-2">
+//                             <User className="w-4 h-4" />
+//                             <span>{article.author}</span>
+//                           </div>
+//                         </div>
+
+//                         <div className="flex items-center gap-2">
+//                           <Button
+//                             size="sm"
+//                             variant="ghost"
+//                             className="hover:bg-primary/10"
+//                           >
+//                             <Share2 className="w-4 h-4" />
+//                           </Button>
+//                           <Button
+//                             asChild
+//                             size="sm"
+//                             variant="outline"
+//                             className="border-primary/30 hover:bg-primary/10 bg-transparent"
+//                           >
+//                             <Link href={`/blog/${article.slug}`}>
+//                               اقرأ المزيد
+//                             </Link>
+//                           </Button>
+//                         </div>
+//                       </div>
+//                     </CardContent>
+//                   </div>
+//                 </Card>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* الشريط الجانبي — التصنيفات وغيرها */}
+//           <div className="space-y-8">
+//             {/* التصنيفات */}
+//             <Card className="bg-card/50 border-primary/20">
+//               <CardContent className="p-6 space-y-4">
+//                 <h3 className="text-lg font-semibold flex items-center gap-2">
+//                   <Tag className="w-5 h-5 text-primary" />
+//                   التصنيفات
+//                 </h3>
+//                 <div className="space-y-3">
+//                   {/* يمكنك جلب التصنيفات من API أو من بيانات ثابتة */}
+//                 </div>
+//               </CardContent>
+//             </Card>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
 
 import { useState, useEffect } from "react";
@@ -467,12 +798,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Scale,
-  BookOpen,
   Calendar,
   User,
   ArrowLeft,
-  Eye,
-  Clock,
   Tag,
   TrendingUp,
   Star,
@@ -481,7 +809,7 @@ import {
 import Link from "next/link";
 
 interface Article {
-  _id?: string; // لاحظ: نحول ObjectId إلى string في الـ API أو عند الإرسال
+  _id?: string;
   title: string;
   slug: string;
   content: string;
@@ -491,7 +819,7 @@ interface Article {
   tags: string[];
   featuredImage?: string;
   isPublished: boolean;
-  publishedAt?: string; // أو Date، حسب ما ترسل من الـ API
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -502,60 +830,36 @@ export default function BlogPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 🟢 دالة جلب المقالات من API مباشرة
+  const fetchArticles = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/public/articles", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`فشل جلب المقالات: ${res.status}`);
+      }
+      const data: Article[] = await res.json();
+
+      const published = data.filter((art) => art.isPublished);
+
+      // اختيار مقال مميز
+      const feat = published[0] || null;
+      setFeatured(feat);
+
+      // استبعاد المقال المميز من القائمة العامة
+      const rest = published.filter((art) => art._id !== feat?._id);
+      setArticles(rest);
+    } catch (err) {
+      console.error("Error fetching articles:", err);
+      setError(err instanceof Error ? err.message : "خطأ غير معروف");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchArticles = async () => {
-  try {
-    const res = await fetch("/api/articles/public");
-    if (!res.ok) throw new Error(`فشل جلب المقالات: ${res.status}`);
-    const data: Article[] = await res.json();
-    const published = data.filter((art) => art.isPublished);
-
-    const feat =
-      published.find((art) => art.slug === "some-featured-slug") ||
-      published[0] ||
-      null;
-
-    setFeatured(feat);
-    setArticles(published.filter((art) => art.slug !== feat?.slug));
-  } catch (err) {
-    setError(err instanceof Error ? err.message : "خطأ غير معروف");
-  } finally {
-    setLoading(false);
-  }
-};
-
-useEffect(() => {
-  fetchArticles();
-}, []);
-
-  //   const fetchArticles = async () => {
-  //     try {
-  //       const res = await fetch("/api/articles/public"); // أو المسار الذي توفره في الـ API
-  //       if (!res.ok) {
-  //         throw new Error(`فشل جلب المقالات: ${res.status}`);
-  //       }
-  //       const data: Article[] = await res.json();
-  //       // فلتر المقالات المنشورة فقط
-  //       const published = data.filter((art) => art.isPublished);
-  //       // يمكنك اختيار أول مقال كمميز
-  //       const feat =
-  //         published.find((art) => art.slug === "some-featured-slug") ||
-  //         published[0] ||
-  //         null;
-  //       setFeatured(feat);
-  //       // استبعد المقال المميز من القائمة العامة
-  //       const rest = published.filter((art) => art.slug !== feat?.slug);
-  //       setArticles(rest);
-  //     } catch (err) {
-  //       console.error("Error fetching articles:", err);
-  //       setError(err instanceof Error ? err.message : "خطأ غير معروف");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchArticles();
-  // }, []);
+    fetchArticles();
+  }, []);
 
   if (loading) {
     return <div className="p-6 text-center">جارٍ تحميل المقالات...</div>;
@@ -567,62 +871,8 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* <nav className="sticky top-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link
-              href="/"
-              className="flex items-center gap-3 hover:scale-105 transition-transform"
-            >
-              <Scale className="w-8 h-8 text-primary" />
-              <span className="text-xl font-bold">المحامي خالد الناصر</span>
-            </Link>
-
-            <div className="hidden md:flex items-center gap-6">
-              <Link
-                href="/"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                الرئيسية
-              </Link>
-              <Link
-                href="/about"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                من نحن
-              </Link>
-              <Link
-                href="/services"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                خدماتنا
-              </Link>
-              <Link
-                href="/team"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                فريق العمل
-              </Link>
-              <Link href="/blog" className="text-primary font-medium">
-                المقالات
-              </Link>
-              <Link
-                href="/contact"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                اتصل بنا
-              </Link>
-            </div>
-
-            <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link href="/contact">احجز استشارة</Link>
-            </Button>
-          </div>
-        </div>
-      </nav> */}
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        {/* قسم المقال المميز */}
+        {/* 🟢 المقال المميز */}
         {featured && (
           <section className="space-y-8">
             <div className="flex items-center gap-3">
@@ -695,7 +945,7 @@ useEffect(() => {
           </section>
         )}
 
-        {/* قائمة باقي المقالات */}
+        {/* 🟢 قائمة باقي المقالات */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-3 space-y-8">
             <div className="flex items-center justify-between">
@@ -709,7 +959,7 @@ useEffect(() => {
             <div className="space-y-8">
               {articles.map((article) => (
                 <Card
-                  key={article.slug}
+                  key={article._id}
                   className="group hover:shadow-xl transition-all duration-300 hover:scale-[1.01] bg-card/50 border-primary/20 hover:border-primary/40 overflow-hidden"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
@@ -793,9 +1043,8 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* الشريط الجانبي — التصنيفات وغيرها */}
+          {/* 🟢 الشريط الجانبي */}
           <div className="space-y-8">
-            {/* التصنيفات */}
             <Card className="bg-card/50 border-primary/20">
               <CardContent className="p-6 space-y-4">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -803,7 +1052,7 @@ useEffect(() => {
                   التصنيفات
                 </h3>
                 <div className="space-y-3">
-                  {/* يمكنك جلب التصنيفات من API أو من بيانات ثابتة */}
+                  {/* لاحقًا تجيب التصنيفات من API */}
                 </div>
               </CardContent>
             </Card>
@@ -813,3 +1062,4 @@ useEffect(() => {
     </div>
   );
 }
+
