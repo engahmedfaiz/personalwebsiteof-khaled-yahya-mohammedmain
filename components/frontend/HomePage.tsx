@@ -124,7 +124,7 @@ export default function HomePage() {
                 <br />
                 <span className="text-primary font-semibold flex items-center justify-center gap-2 mt-2">
                   <Eye className="w-5 h-5" />
-                  خبرة تزيد عن 15 عاماً في خدمة العدالة
+                  خبرة تزيد عن 10 عاماً في خدمة العدالة
                   <Heart className="w-5 h-5" />
                 </span>
               </p>
