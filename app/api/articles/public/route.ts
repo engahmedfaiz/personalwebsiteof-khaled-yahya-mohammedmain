@@ -17,7 +17,7 @@ export async function GET() {
     // تأكد من تحويل ObjectId إلى string
     const serialized = articles.map((article) => ({
       ...article,
-      _id: article._id.toString(),
+     
     }));
 
     return NextResponse.json(serialized);
