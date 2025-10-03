@@ -123,7 +123,7 @@ export default function Sidebar({
                 className="text-xs bg-primary/10 text-primary border-primary/20"
               >
                 <Shield className="w-3 h-3 ml-1" />
-                15+ سنة خبرة
+                10+ سنة خبرة
               </Badge>
             </div>
           </div>
