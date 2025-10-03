@@ -47,7 +47,7 @@ export default function AboutPage() {
   ];
 
   const achievements = [
-    { number: "15+", label: "سنوات خبرة", icon: <Award className="w-6 h-6" /> },
+    { number: "10+", label: "سنوات خبرة", icon: <Award className="w-6 h-6" /> },
     {
       number: "500+",
       label: "قضية ناجحة",
