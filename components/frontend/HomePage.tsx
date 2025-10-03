@@ -73,7 +73,7 @@ export default function HomePage() {
   ];
 
   const stats: Stat[] = [
-    { number: "15+", label: "سنوات خبرة", icon: <Award className="w-6 h-6" /> },
+    { number: "10+", label: "سنوات خبرة", icon: <Award className="w-6 h-6" /> },
     { number: "500+", label: "قضية ناجحة", icon: <CheckCircle className="w-6 h-6" /> },
     { number: "98%", label: "معدل النجاح", icon: <Star className="w-6 h-6" /> },
     { number: "24/7", label: "دعم متواصل", icon: <Phone className="w-6 h-6" /> },
