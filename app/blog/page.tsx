@@ -834,7 +834,7 @@ export default function BlogPage() {
   const fetchArticles = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/public/articles", { cache: "no-store" });
+      const res = await fetch("/api/articles/public", { cache: "no-store" });
       if (!res.ok) {
         throw new Error(`فشل جلب المقالات: ${res.status}`);
       }
